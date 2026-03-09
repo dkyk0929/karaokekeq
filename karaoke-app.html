@@ -16,642 +16,325 @@
     --text: #f0f0ff;
     --muted: #6b6b8a;
     --success: #00ffaa;
+    --warning: #ffb020;
     --radius: 16px;
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
   body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: 
-      radial-gradient(ellipse at 20% 50%, rgba(121, 40, 202, 0.15) 0%, transparent 50%),
-      radial-gradient(ellipse at 80% 20%, rgba(255, 60, 172, 0.1) 0%, transparent 50%),
-      radial-gradient(ellipse at 60% 80%, rgba(0, 212, 255, 0.08) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: 0;
+    content: ''; position: fixed; inset: 0;
+    background: radial-gradient(ellipse at 20% 50%, rgba(121,40,202,0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(255,60,172,0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 60% 80%, rgba(0,212,255,0.08) 0%, transparent 50%);
+    pointer-events: none; z-index: 0;
   }
-
-  .app { position: relative; z-index: 1; }
+  .app { position: relative; z-index: 1; min-height: 100vh; display: flex; flex-direction: column; }
   .hidden { display: none !important; }
 
-  /* MODE SELECTOR */
-  .mode-selector {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    flex-direction: column;
-    gap: 32px;
-    padding: 24px;
-  }
+  #login-screen { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px; padding: 32px; text-align: center; }
+  .logo { font-family: 'Black Han Sans', sans-serif; font-size: clamp(52px,12vw,88px); background: linear-gradient(135deg,var(--accent),var(--accent2),var(--accent3)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: pulse-glow 3s ease-in-out infinite; }
+  @keyframes pulse-glow { 0%,100%{filter:drop-shadow(0 0 20px rgba(255,60,172,0.3))} 50%{filter:drop-shadow(0 0 40px rgba(121,40,202,0.5))} }
+  .tagline { color: var(--muted); font-size: 15px; line-height: 1.6; max-width: 280px; }
+  .how-it-works { background: var(--surface); border: 1px solid rgba(255,255,255,0.06); border-radius: var(--radius); padding: 20px 24px; text-align: left; max-width: 320px; width: 100%; }
+  .how-title { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+  .how-step { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; font-size: 13px; color: var(--text); line-height: 1.4; }
+  .how-step:last-child { margin-bottom: 0; }
+  .step-num { width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg,var(--accent),var(--accent2)); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+  .google-btn { background: white; color: #1a1a1a; border: none; padding: 14px 28px; border-radius: 50px; cursor: pointer; font-family: 'DM Sans',sans-serif; font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 10px; transition: all 0.2s; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+  .google-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.4); }
+  .google-btn img { width: 20px; height: 20px; }
 
-  .logo {
-    font-family: 'Black Han Sans', sans-serif;
-    font-size: clamp(48px, 10vw, 80px);
-    background: linear-gradient(135deg, var(--accent), var(--accent2), var(--accent3));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    letter-spacing: -2px;
-    animation: pulse-glow 3s ease-in-out infinite;
-  }
+  #main-app { flex: 1; display: flex; flex-direction: column; }
+  .header { padding: 14px 20px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid rgba(255,255,255,0.06); flex-shrink: 0; }
+  .header-logo { font-family: 'Black Han Sans',sans-serif; font-size: 20px; background: linear-gradient(135deg,var(--accent),var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; flex: 1; }
+  .playlist-badge { display: flex; align-items: center; gap: 6px; background: var(--surface2); border-radius: 20px; padding: 5px 10px; font-size: 11px; color: var(--muted); cursor: pointer; transition: all 0.2s; max-width: 150px; }
+  .playlist-badge:hover { background: var(--surface); color: var(--text); }
+  .playlist-badge .pl-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .user-avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; cursor: pointer; border: 2px solid rgba(255,255,255,0.1); }
 
-  @keyframes pulse-glow {
-    0%, 100% { filter: drop-shadow(0 0 20px rgba(255,60,172,0.3)); }
-    50% { filter: drop-shadow(0 0 40px rgba(121,40,202,0.5)); }
-  }
+  #playlist-selector { background: var(--surface); border-bottom: 1px solid rgba(255,255,255,0.06); padding: 14px 20px; }
+  .pl-selector-title { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+  .pl-list { display: flex; flex-direction: column; gap: 6px; max-height: 220px; overflow-y: auto; }
+  .pl-item { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 10px; cursor: pointer; transition: background 0.2s; font-size: 13px; border: 1px solid transparent; }
+  .pl-item:hover { background: var(--surface2); }
+  .pl-item.selected { background: rgba(255,60,172,0.12); border-color: rgba(255,60,172,0.3); }
+  .pl-item-icon { font-size: 16px; flex-shrink: 0; }
+  .pl-item-name { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pl-item-count { font-size: 11px; color: var(--muted); flex-shrink: 0; }
+  .new-pl-btn { display: flex; align-items: center; gap: 8px; padding: 9px 10px; border-radius: 10px; cursor: pointer; font-size: 13px; color: var(--accent); transition: background 0.2s; border: 1px dashed rgba(255,60,172,0.3); margin-top: 8px; }
+  .new-pl-btn:hover { background: rgba(255,60,172,0.08); }
 
-  .subtitle {
-    color: var(--muted);
-    font-size: 16px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    margin-top: -20px;
-  }
-
-  .mode-cards { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
-
-  .mode-card {
-    background: var(--surface);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: var(--radius);
-    padding: 40px 48px;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    text-align: center;
-    min-width: 200px;
-  }
-
-  .mode-card:hover { transform: translateY(-8px) scale(1.02); border-color: var(--accent); box-shadow: 0 20px 60px rgba(255,60,172,0.2); }
-  .mode-card.tv:hover { border-color: var(--accent3); box-shadow: 0 20px 60px rgba(0,212,255,0.2); }
-
-  .mode-icon { font-size: 52px; margin-bottom: 16px; }
-  .mode-title { font-family: 'Black Han Sans', sans-serif; font-size: 22px; margin-bottom: 8px; }
-  .mode-desc { color: var(--muted); font-size: 13px; line-height: 1.5; }
-
-  /* PHONE VIEW */
-  #phone-view { min-height: 100vh; display: flex; flex-direction: column; }
-
-  .phone-header { padding: 20px 20px 0; display: flex; align-items: center; gap: 12px; }
-
-  .back-btn {
-    background: var(--surface);
-    border: none;
-    color: var(--muted);
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 16px;
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.2s;
-  }
-  .back-btn:hover { color: var(--text); background: var(--surface2); }
-
-  .phone-title {
-    font-family: 'Black Han Sans', sans-serif;
-    font-size: 22px;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .status-dot { margin-left: auto; display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--muted); }
-  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); transition: all 0.3s; }
-  .dot.connected { background: var(--success); box-shadow: 0 0 6px var(--success); }
-
-  .search-section { padding: 16px 20px; }
-
-  .search-box {
-    display: flex;
-    gap: 10px;
-    background: var(--surface);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 50px;
-    padding: 6px 6px 6px 20px;
-    transition: border-color 0.2s;
-  }
+  .search-section { padding: 14px 20px; flex-shrink: 0; }
+  .search-box { display: flex; gap: 8px; background: var(--surface); border: 1px solid rgba(255,255,255,0.08); border-radius: 50px; padding: 6px 6px 6px 18px; transition: border-color 0.2s; }
   .search-box:focus-within { border-color: var(--accent); }
-
-  .search-input {
-    flex: 1;
-    background: none;
-    border: none;
-    outline: none;
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-  }
+  .search-input { flex: 1; background: none; border: none; outline: none; color: var(--text); font-family: 'DM Sans',sans-serif; font-size: 15px; }
   .search-input::placeholder { color: var(--muted); }
+  .search-btn { background: linear-gradient(135deg,var(--accent),var(--accent2)); border: none; color: white; padding: 9px 18px; border-radius: 50px; cursor: pointer; font-family: 'DM Sans',sans-serif; font-weight: 600; font-size: 14px; }
 
-  .search-btn {
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 50px;
-    cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 600;
-    font-size: 14px;
-    transition: opacity 0.2s;
-  }
-  .search-btn:hover { opacity: 0.85; }
+  .no-playlist-warn { margin: 0 20px 10px; background: rgba(255,176,32,0.08); border: 1px solid rgba(255,176,32,0.25); border-radius: 10px; padding: 10px 14px; font-size: 12px; color: var(--warning); display: flex; align-items: center; gap: 8px; }
 
-  .results-section { padding: 0 20px; flex: 1; overflow-y: auto; max-height: calc(100vh - 380px); }
-
-  .section-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
-
-  .result-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px;
-    border-radius: 12px;
-    margin-bottom: 8px;
-    transition: background 0.2s;
-  }
+  .results-section { flex: 1; overflow-y: auto; padding: 0 20px 20px; }
+  .section-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; padding-top: 4px; }
+  .result-item { display: flex; align-items: center; gap: 12px; padding: 10px; border-radius: 12px; margin-bottom: 8px; transition: background 0.2s; }
   .result-item:hover { background: var(--surface); }
-
-  .result-thumb { width: 72px; height: 48px; border-radius: 8px; object-fit: cover; flex-shrink: 0; background: var(--surface2); }
-
+  .result-thumb { width: 80px; height: 52px; border-radius: 8px; object-fit: cover; flex-shrink: 0; background: var(--surface2); }
   .result-info { flex: 1; min-width: 0; }
-  .result-title { font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 3px; }
+  .result-title { font-size: 13px; font-weight: 500; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 3px; }
   .result-channel { font-size: 11px; color: var(--muted); }
+  .queue-btn { background: linear-gradient(135deg,var(--accent),var(--accent2)); border: none; color: white; padding: 8px 14px; border-radius: 20px; cursor: pointer; font-family: 'DM Sans',sans-serif; font-size: 12px; font-weight: 600; flex-shrink: 0; white-space: nowrap; transition: all 0.2s; min-width: 80px; text-align: center; }
+  .queue-btn:hover { opacity: 0.85; transform: scale(1.03); }
+  .queue-btn.added { background: var(--success); color: #000; pointer-events: none; }
+  .queue-btn.loading { background: var(--surface2); color: var(--muted); pointer-events: none; }
 
-  .add-btn {
-    background: none;
-    border: 1px solid rgba(255,255,255,0.1);
-    color: var(--accent);
-    width: 32px; height: 32px;
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 18px;
-    flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.2s;
-  }
-  .add-btn:hover { background: var(--accent); color: white; border-color: var(--accent); }
-  .add-btn.added { background: var(--success); border-color: var(--success); color: #000; pointer-events: none; }
+  .queue-bar { background: var(--surface); border-top: 1px solid rgba(255,255,255,0.06); padding: 12px 20px; display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+  .queue-info { flex: 1; min-width: 0; }
+  .queue-info-title { font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .queue-info-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .open-yt-btn { background: #ff0000; border: none; color: white; padding: 10px 16px; border-radius: 50px; cursor: pointer; font-family: 'DM Sans',sans-serif; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 6px; transition: opacity 0.2s; white-space: nowrap; }
+  .open-yt-btn:hover { opacity: 0.85; }
 
-  .queue-panel {
-    background: var(--surface);
-    border-top: 1px solid rgba(255,255,255,0.06);
-    padding: 16px 20px;
-    flex-shrink: 0;
-  }
-
-  .queue-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-
-  .queue-count { font-size: 11px; background: var(--accent); color: white; padding: 2px 8px; border-radius: 20px; font-weight: 600; }
-
-  .clear-btn { background: none; border: none; color: var(--muted); font-size: 12px; cursor: pointer; transition: color 0.2s; }
-  .clear-btn:hover { color: var(--accent); }
-
-  .queue-list { overflow-y: auto; max-height: 180px; }
-
-  .queue-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px;
-    border-radius: 10px;
-    margin-bottom: 6px;
-    background: var(--surface2);
-  }
-  .queue-item.playing { background: linear-gradient(135deg, rgba(255,60,172,0.15), rgba(121,40,202,0.15)); border: 1px solid rgba(255,60,172,0.3); }
-
-  .queue-num { font-size: 11px; color: var(--muted); width: 18px; text-align: center; flex-shrink: 0; }
-  .queue-item.playing .queue-num { color: var(--accent); animation: blink 1s infinite; }
-
-  @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
-
-  .queue-thumb { width: 44px; height: 30px; border-radius: 6px; object-fit: cover; background: var(--bg); flex-shrink: 0; }
-  .queue-title { flex: 1; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .remove-btn { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 14px; padding: 4px; transition: color 0.2s; }
-  .remove-btn:hover { color: var(--accent); }
-
-  /* TV VIEW */
-  #tv-view { min-height: 100vh; display: flex; flex-direction: column; background: #000; }
-  .tv-main { flex: 1; position: relative; background: #000; }
-  #tv-player { width: 100%; height: calc(100vh - 140px); border: none; }
-
-  .tv-overlay {
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--bg);
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .tv-play-btn {
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    border: none;
-    color: white;
-    padding: 18px 40px;
-    border-radius: 50px;
-    cursor: pointer;
-    font-family: 'Black Han Sans', sans-serif;
-    font-size: 20px;
-    letter-spacing: 1px;
-    transition: all 0.2s;
-    box-shadow: 0 8px 30px rgba(255,60,172,0.3);
-  }
-  .tv-play-btn:hover { transform: scale(1.05); box-shadow: 0 12px 40px rgba(255,60,172,0.5); }
-  .tv-play-btn.hidden { display: none; }
-
-  .tv-idle-logo {
-    font-family: 'Black Han Sans', sans-serif;
-    font-size: 64px;
-    background: linear-gradient(135deg, var(--accent), var(--accent2), var(--accent3));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: pulse-glow 3s ease-in-out infinite;
-  }
-
-  .tv-idle-text { color: var(--muted); font-size: 18px; }
-
-  .tv-queue-bar {
-    background: var(--surface);
-    border-top: 1px solid rgba(255,255,255,0.06);
-    padding: 16px 24px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    height: 140px;
-    overflow: hidden;
-  }
-
-  .tv-now-playing { flex-shrink: 0; width: 220px; }
-  .tv-now-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
-  .tv-now-title { font-family: 'Black Han Sans', sans-serif; font-size: 15px; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-  .tv-divider { width: 1px; height: 60px; background: rgba(255,255,255,0.1); flex-shrink: 0; }
-
-  .tv-up-next { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
-
-  .tv-queue-scroll { display: flex; gap: 12px; overflow: hidden; flex: 1; }
-
-  .tv-queue-chip { background: var(--surface2); border-radius: 8px; padding: 8px 12px; flex-shrink: 0; max-width: 180px; display: flex; align-items: center; gap: 8px; }
-  .tv-chip-num { font-size: 11px; color: var(--accent); font-weight: 600; flex-shrink: 0; }
-  .tv-chip-title { font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-  .tv-controls { display: flex; gap: 10px; margin-left: auto; flex-shrink: 0; }
-
-  .tv-btn {
-    background: var(--surface2);
-    border: 1px solid rgba(255,255,255,0.08);
-    color: var(--text);
-    padding: 10px 18px;
-    border-radius: 50px;
-    cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    font-weight: 500;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .tv-btn:hover { background: var(--accent); border-color: var(--accent); }
-  .tv-btn.primary { background: linear-gradient(135deg, var(--accent), var(--accent2)); border-color: transparent; }
-
-  .loading { text-align: center; padding: 32px; color: var(--muted); font-size: 14px; }
-  .spinner { width: 24px; height: 24px; border: 2px solid rgba(255,255,255,0.1); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 12px; }
+  .loading { text-align: center; padding: 40px 20px; color: var(--muted); font-size: 14px; }
+  .spinner { width: 28px; height: 28px; border: 2px solid rgba(255,255,255,0.1); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 12px; }
   @keyframes spin { to { transform: rotate(360deg); } }
+  .empty-state { text-align: center; padding: 40px 20px; color: var(--muted); font-size: 14px; line-height: 1.6; }
+  .empty-icon { font-size: 40px; margin-bottom: 12px; }
 
-  .toast {
-    position: fixed;
-    bottom: 24px;
-    left: 50%;
-    transform: translateX(-50%) translateY(80px);
-    background: var(--success);
-    color: #000;
-    padding: 10px 20px;
-    border-radius: 50px;
-    font-size: 13px;
-    font-weight: 600;
-    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    z-index: 999;
-    white-space: nowrap;
-  }
+  .toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%) translateY(80px); padding: 10px 20px; border-radius: 50px; font-size: 13px; font-weight: 600; transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1); z-index: 999; white-space: nowrap; pointer-events: none; }
+  .toast.success { background: var(--success); color: #000; }
+  .toast.error { background: #ff4444; color: white; }
   .toast.show { transform: translateX(-50%) translateY(0); }
 
-  .empty-state { text-align: center; padding: 24px; color: var(--muted); font-size: 13px; }
-
-  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar { width: 4px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--surface2); border-radius: 2px; }
 </style>
 </head>
 <body>
 <div class="app">
-
-  <!-- MODE SELECTOR -->
-  <div class="mode-selector" id="mode-selector">
+  <div id="login-screen">
     <div class="logo">🎤 KaraokeQ</div>
-    <div class="subtitle">Choose your device</div>
-    <div class="mode-cards">
-      <div class="mode-card phone" onclick="showView('phone')">
-        <div class="mode-icon">📱</div>
-        <div class="mode-title">Phone</div>
-        <div class="mode-desc">Search songs &<br>manage the queue</div>
-      </div>
-      <div class="mode-card tv" onclick="showView('tv')">
-        <div class="mode-icon">📺</div>
-        <div class="mode-title">TV</div>
-        <div class="mode-desc">Full screen player<br>with queue display</div>
-      </div>
+    <div class="how-it-works">
+      <div class="how-title">How it works</div>
+      <div class="how-step"><div class="step-num">1</div><div>Sign in with Google to connect your YouTube</div></div>
+      <div class="how-step"><div class="step-num">2</div><div>Search songs — hit <strong>+ Queue</strong> to add to a YouTube playlist</div></div>
+      <div class="how-step"><div class="step-num">3</div><div>Open that playlist on your TV YouTube app and sing! 🎵</div></div>
     </div>
+    <button class="google-btn" onclick="signIn()">
+      <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="G">
+      Sign in with Google
+    </button>
   </div>
 
-  <!-- PHONE VIEW -->
-  <div id="phone-view" class="hidden">
-    <div class="phone-header">
-      <button class="back-btn" onclick="showView('home')">←</button>
-      <div class="phone-title">🎤 KaraokeQ</div>
-      <div class="status-dot">
-        <div class="dot" id="status-dot"></div>
-        <span id="status-text">Connecting...</span>
+  <div id="main-app" class="hidden">
+    <div class="header">
+      <div class="header-logo">🎤 KaraokeQ</div>
+      <div class="playlist-badge" onclick="togglePlaylistSelector()">
+        <span>📋</span>
+        <span class="pl-name" id="pl-name-display">Select playlist</span>
+        <span>▾</span>
       </div>
+      <img class="user-avatar" id="user-avatar" src="" alt="User" onclick="signOut()" title="Sign out">
+    </div>
+
+    <div id="playlist-selector" class="hidden">
+      <div class="pl-selector-title">Your Playlists</div>
+      <div class="pl-list" id="pl-list"><div class="loading"><div class="spinner"></div></div></div>
+      <div class="new-pl-btn" onclick="createNewPlaylist()">＋ Create new "KaraokeQ 🎤" playlist</div>
     </div>
 
     <div class="search-section">
       <div class="search-box">
-        <input class="search-input" id="search-input" type="text" placeholder="Search Korean songs..."
-          onkeydown="if(event.key==='Enter') window.searchYouTube()">
-        <button class="search-btn" onclick="window.searchYouTube()">Search</button>
+        <input class="search-input" id="search-input" type="text" placeholder="Search Korean songs... 🎵" onkeydown="if(event.key==='Enter') doSearch()">
+        <button class="search-btn" onclick="doSearch()">Search</button>
       </div>
     </div>
+
+    <div class="no-playlist-warn hidden" id="no-playlist-warn">⚠️ Select a playlist above first!</div>
 
     <div class="results-section" id="results-section">
-      <div class="empty-state">Search for a song to get started 🎵</div>
+      <div class="empty-state"><div class="empty-icon">🎤</div>Search a song and hit <strong>+ Queue</strong><br>to add it to your YouTube playlist</div>
     </div>
 
-    <div class="queue-panel">
-      <div class="queue-header">
-        <div style="display:flex;align-items:center;gap:8px;">
-          <div class="section-label" style="margin:0">Queue</div>
-          <div class="queue-count" id="queue-count">0</div>
-        </div>
-        <button class="clear-btn" onclick="window.clearQueue()">Clear all</button>
+    <div class="queue-bar">
+      <div class="queue-info">
+        <div class="queue-info-title" id="queue-info-title">No playlist selected</div>
+        <div class="queue-info-sub" id="queue-info-sub">Select a playlist to start queuing</div>
       </div>
-      <div class="queue-list" id="phone-queue-list">
-        <div class="empty-state">No songs queued yet</div>
-      </div>
+      <button class="open-yt-btn" onclick="openPlaylistOnYT()">▶ Open on TV</button>
     </div>
   </div>
-
-  <!-- TV VIEW -->
-  <div id="tv-view" class="hidden">
-    <div class="tv-main">
-      <div class="tv-overlay" id="tv-overlay">
-        <div class="tv-idle-logo">🎤 KaraokeQ</div>
-        <div class="tv-idle-text" id="tv-idle-text">Add songs from your phone to start</div>
-        <button class="tv-play-btn hidden" id="tv-play-btn" onclick="window.openCurrentVideo()">▶ Play on YouTube</button>
-      </div>
-    </div>
-    <div class="tv-queue-bar">
-      <div class="tv-now-playing">
-        <div class="tv-now-label">▶ Now Playing</div>
-        <div class="tv-now-title" id="tv-now-title">—</div>
-      </div>
-      <div class="tv-divider"></div>
-      <div style="flex:1;min-width:0;">
-        <div class="tv-up-next">Up Next</div>
-        <div class="tv-queue-scroll" id="tv-queue-scroll">
-          <div style="color:var(--muted);font-size:13px;">Queue is empty</div>
-        </div>
-      </div>
-      <div class="tv-controls">
-        <button class="tv-btn" onclick="window.skipSong()">⏭ Skip</button>
-        <button class="tv-btn primary" onclick="window.playNext()">▶ Play Next</button>
-      </div>
-    </div>
-  </div>
-
 </div>
 
 <div class="toast" id="toast"></div>
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+<script>
+const CLIENT_ID = '196119413769-v3keligkgd1bfsh6dlgs888purjfskqt.apps.googleusercontent.com';
+const YT_KEY = 'AIzaSyBmydGkqWKuH1ecZ4dH1k667YlY0qFjWW0';
+const SCOPES = 'https://www.googleapis.com/auth/youtube';
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyDfZHQNoYOpUaBOhYIn2x3lr_BQuC6l62s",
-    authDomain: "karaokeq-564b2.firebaseapp.com",
-    databaseURL: "https://karaokeq-564b2-default-rtdb.firebaseio.com",
-    projectId: "karaokeq-564b2",
-    storageBucket: "karaokeq-564b2.firebasestorage.app",
-    messagingSenderId: "149342264225",
-    appId: "1:149342264225:web:24d626de87546757d249e0"
-  };
+let accessToken = null;
+let selectedPlaylist = null;
+let queuedIds = new Set();
+let addedCount = 0;
 
-  const firebaseApp = initializeApp(firebaseConfig);
-  const db = getDatabase(firebaseApp);
-
-  const YT_KEY = 'AIzaSyBmydGkqWKuH1ecZ4dH1k667YlY0qFjWW0';
-
-  let queue = [];
-  let currentVideo = null;
-  let currentView = 'home';
-  let addedIds = new Set();
-
-  // ── Firebase listeners ──
-  onValue(ref(db, 'karaokeq/queue'), snap => {
-    queue = snap.val() || [];
-    addedIds = new Set(queue.map(v => v.videoId));
-    if (currentView === 'phone') renderPhoneQueue();
-    if (currentView === 'tv') renderTVQueue();
+function signIn() {
+  const params = new URLSearchParams({
+    client_id: CLIENT_ID,
+    redirect_uri: location.href.split('?')[0].split('#')[0],
+    response_type: 'token',
+    scope: SCOPES,
+    prompt: 'select_account'
   });
+  location.href = 'https://accounts.google.com/o/oauth2/v2/auth?' + params;
+}
 
-  onValue(ref(db, 'karaokeq/current'), snap => {
-    const prev = currentVideo?.videoId;
-    currentVideo = snap.val() || null;
-    if (currentView === 'tv' && currentVideo?.videoId !== prev) renderTVPlayer();
-    if (currentView === 'phone') renderPhoneQueue();
-  });
+function signOut() {
+  accessToken = null; selectedPlaylist = null; queuedIds.clear(); addedCount = 0;
+  localStorage.removeItem('kq_playlist');
+  document.getElementById('login-screen').classList.remove('hidden');
+  document.getElementById('main-app').classList.add('hidden');
+}
 
-  onValue(ref(db, '.info/connected'), snap => {
-    const ok = snap.val();
-    const dot = document.getElementById('status-dot');
-    const txt = document.getElementById('status-text');
-    if (dot) dot.className = 'dot' + (ok ? ' connected' : '');
-    if (txt) txt.textContent = ok ? 'Live' : 'Reconnecting...';
-  });
+function handleRedirect() {
+  const hash = location.hash.substring(1);
+  const params = new URLSearchParams(hash);
+  const token = params.get('access_token');
+  if (token) { accessToken = token; history.replaceState(null,'',location.pathname); initApp(); }
+}
 
-  // ── DB helpers ──
-  async function saveQueue() { await set(ref(db, 'karaokeq/queue'), queue.length ? queue : null); }
-  async function saveCurrent() { await set(ref(db, 'karaokeq/current'), currentVideo || null); }
+async function initApp() {
+  document.getElementById('login-screen').classList.add('hidden');
+  document.getElementById('main-app').classList.remove('hidden');
+  try {
+    const res = await gFetch('https://www.googleapis.com/oauth2/v3/userinfo');
+    const img = document.getElementById('user-avatar');
+    if (res.picture) img.src = res.picture;
+    img.title = 'Signed in as ' + res.name + ' — click to sign out';
+  } catch(e) {}
+  const saved = localStorage.getItem('kq_playlist');
+  if (saved) { try { selectedPlaylist = JSON.parse(saved); updatePlaylistDisplay(); } catch(e) {} }
+  await loadPlaylists();
+}
 
-  // ── View ──
-  window.showView = function(view) {
-    currentView = view;
-    document.getElementById('mode-selector').classList.toggle('hidden', view !== 'home');
-    document.getElementById('phone-view').classList.toggle('hidden', view !== 'phone');
-    document.getElementById('tv-view').classList.toggle('hidden', view !== 'tv');
-    if (view === 'phone') renderPhoneQueue();
-    if (view === 'tv') { renderTVPlayer(); renderTVQueue(); }
-  };
-
-  // ── Search ──
-  window.searchYouTube = async function() {
-    const query = document.getElementById('search-input').value.trim();
-    if (!query) return;
-    const section = document.getElementById('results-section');
-    section.innerHTML = `<div class="loading"><div class="spinner"></div>Searching...</div>`;
-    try {
-      const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(query + ' 노래방 MR')}&type=video&maxResults=12&key=${YT_KEY}`;
-      const data = await (await fetch(url)).json();
-      if (!data.items?.length) { section.innerHTML = `<div class="empty-state">No results found</div>`; return; }
-      section.innerHTML = `<div class="section-label">Results</div>`;
-      data.items.forEach(item => {
-        const vid = item.id.videoId;
-        const title = item.snippet.title;
-        const channel = item.snippet.channelTitle;
-        const thumb = item.snippet.thumbnails.default.url;
-        const isAdded = addedIds.has(vid);
-        const el = document.createElement('div');
-        el.className = 'result-item';
-        el.innerHTML = `
-          <img class="result-thumb" src="${thumb}" alt="">
-          <div class="result-info">
-            <div class="result-title">${esc(title)}</div>
-            <div class="result-channel">${esc(channel)}</div>
-          </div>
-          <button class="add-btn ${isAdded ? 'added' : ''}" id="btn-${vid}">${isAdded ? '✓' : '+'}</button>
-        `;
-        el.querySelector('.add-btn').addEventListener('click', () => addToQueue(vid, title, thumb));
-        section.appendChild(el);
-      });
-    } catch(e) { section.innerHTML = `<div class="empty-state">Error: ${e.message}</div>`; }
-  };
-
-  // ── Queue ──
-  async function addToQueue(videoId, title, thumb) {
-    if (addedIds.has(videoId)) return;
-    addedIds.add(videoId);
-    const btn = document.getElementById(`btn-${videoId}`);
-    if (btn) { btn.textContent = '✓'; btn.classList.add('added'); }
-    queue.push({ videoId, title, thumb });
-    await saveQueue();
-    showToast(`Added to queue!`);
-  }
-
-  window.removeFromQueue = async function(index) {
-    const removed = queue.splice(index, 1)[0];
-    if (removed) addedIds.delete(removed.videoId);
-    await saveQueue();
-  };
-
-  window.clearQueue = async function() {
-    queue = [];
-    addedIds.clear();
-    await saveQueue();
-  };
-
-  function renderPhoneQueue() {
-    const list = document.getElementById('phone-queue-list');
-    const count = document.getElementById('queue-count');
-    if (!list) return;
-    if (count) count.textContent = queue.length;
-    if (queue.length === 0) { list.innerHTML = '<div class="empty-state">No songs queued yet</div>'; return; }
+async function loadPlaylists() {
+  const list = document.getElementById('pl-list');
+  list.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+  try {
+    const data = await gFetch('https://www.googleapis.com/youtube/v3/playlists?part=snippet,contentDetails&mine=true&maxResults=50');
     list.innerHTML = '';
-    queue.forEach((item, i) => {
-      const isPlaying = currentVideo?.videoId === item.videoId;
+    if (!data.items?.length) { list.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:8px">No playlists found</div>'; return; }
+    data.items.forEach(pl => {
       const el = document.createElement('div');
-      el.className = `queue-item${isPlaying ? ' playing' : ''}`;
-      el.innerHTML = `
-        <div class="queue-num">${isPlaying ? '♪' : i + 1}</div>
-        <img class="queue-thumb" src="${item.thumb}" alt="">
-        <div class="queue-title">${esc(item.title)}</div>
-        <button class="remove-btn" onclick="window.removeFromQueue(${i})">✕</button>
-      `;
+      el.className = 'pl-item' + (selectedPlaylist?.id === pl.id ? ' selected' : '');
+      el.innerHTML = '<span class="pl-item-icon">📋</span><span class="pl-item-name">' + esc(pl.snippet.title) + '</span><span class="pl-item-count">' + pl.contentDetails.itemCount + ' songs</span>';
+      el.addEventListener('click', () => selectPlaylist(pl.id, pl.snippet.title));
       list.appendChild(el);
     });
-  }
+  } catch(e) { list.innerHTML = '<div style="color:#ff4444;font-size:13px;padding:8px">Error loading playlists</div>'; }
+}
 
-  // ── TV ──
-  function renderTVPlayer() {
-    const overlay = document.getElementById('tv-overlay');
-    const nowTitle = document.getElementById('tv-now-title');
-    const idleText = document.getElementById('tv-idle-text');
-    const playBtn = document.getElementById('tv-play-btn');
-    if (!overlay) return;
+function selectPlaylist(id, title) {
+  selectedPlaylist = { id, title };
+  localStorage.setItem('kq_playlist', JSON.stringify(selectedPlaylist));
+  updatePlaylistDisplay();
+  togglePlaylistSelector();
+  document.getElementById('no-playlist-warn').classList.add('hidden');
+  showToast('Playlist: ' + title, 'success');
+}
 
-    overlay.style.display = 'flex';
+function updatePlaylistDisplay() {
+  if (!selectedPlaylist) return;
+  document.getElementById('pl-name-display').textContent = selectedPlaylist.title;
+  document.getElementById('queue-info-title').textContent = selectedPlaylist.title;
+  document.getElementById('queue-info-sub').textContent = addedCount + ' song' + (addedCount !== 1 ? 's' : '') + ' added this session';
+}
 
-    if (currentVideo) {
-      if (nowTitle) nowTitle.textContent = currentVideo.title;
-      if (idleText) idleText.textContent = `Up: ${currentVideo.title}`;
-      if (playBtn) playBtn.classList.remove('hidden');
-    } else {
-      if (nowTitle) nowTitle.textContent = '—';
-      if (idleText) idleText.textContent = 'Add songs from your phone to start';
-      if (playBtn) playBtn.classList.add('hidden');
-    }
-  }
-
-  window.openCurrentVideo = function() {
-    if (!currentVideo) return;
-    window.open(`https://www.youtube.com/watch?v=${currentVideo.videoId}`, '_blank');
-  };
-
-  function renderTVQueue() {
-    const qs = document.getElementById('tv-queue-scroll');
-    if (!qs) return;
-    if (queue.length === 0) { qs.innerHTML = '<div style="color:var(--muted);font-size:13px;">Queue is empty</div>'; return; }
-    qs.innerHTML = '';
-    queue.forEach((item, i) => {
-      const chip = document.createElement('div');
-      chip.className = 'tv-queue-chip';
-      chip.innerHTML = `<div class="tv-chip-num">${i + 1}</div><div class="tv-chip-title">${esc(item.title)}</div>`;
-      qs.appendChild(chip);
+async function createNewPlaylist() {
+  showToast('Creating playlist...', 'success');
+  try {
+    const data = await gFetch('https://www.googleapis.com/youtube/v3/playlists?part=snippet,status', {
+      method: 'POST',
+      body: JSON.stringify({ snippet: { title: 'KaraokeQ 🎤', description: 'Karaoke queue managed by KaraokeQ' }, status: { privacyStatus: 'private' } })
     });
+    selectPlaylist(data.id, data.snippet.title);
+    await loadPlaylists();
+  } catch(e) { showToast('Failed to create playlist', 'error'); }
+}
+
+function togglePlaylistSelector() {
+  document.getElementById('playlist-selector').classList.toggle('hidden');
+}
+
+async function doSearch() {
+  const query = document.getElementById('search-input').value.trim();
+  if (!query) return;
+  if (!selectedPlaylist) { document.getElementById('no-playlist-warn').classList.remove('hidden'); document.getElementById('playlist-selector').classList.remove('hidden'); return; }
+  const section = document.getElementById('results-section');
+  section.innerHTML = '<div class="loading"><div class="spinner"></div>Searching...</div>';
+  try {
+    const url = 'https://www.googleapis.com/youtube/v3/search?part=snippet&q=' + encodeURIComponent(query + ' 노래방 MR') + '&type=video&maxResults=15&key=' + YT_KEY;
+    const data = await (await fetch(url)).json();
+    if (!data.items?.length) { section.innerHTML = '<div class="empty-state"><div class="empty-icon">🔍</div>No results found</div>'; return; }
+    section.innerHTML = '<div class="section-label">Results — tap + Queue to add</div>';
+    data.items.forEach(item => {
+      const vid = item.id.videoId;
+      const title = item.snippet.title;
+      const channel = item.snippet.channelTitle;
+      const thumb = item.snippet.thumbnails.medium?.url || item.snippet.thumbnails.default?.url;
+      const isAdded = queuedIds.has(vid);
+      const el = document.createElement('div');
+      el.className = 'result-item';
+      el.innerHTML = '<img class="result-thumb" src="' + thumb + '" loading="lazy"><div class="result-info"><div class="result-title">' + esc(title) + '</div><div class="result-channel">' + esc(channel) + '</div></div><button class="queue-btn ' + (isAdded ? 'added' : '') + '" id="qbtn-' + vid + '">' + (isAdded ? '✓ Added' : '+ Queue') + '</button>';
+      el.querySelector('.queue-btn').addEventListener('click', () => addToPlaylist(vid, title));
+      section.appendChild(el);
+    });
+  } catch(e) { section.innerHTML = '<div class="empty-state">Error: ' + e.message + '</div>'; }
+}
+
+async function addToPlaylist(videoId, title) {
+  if (!selectedPlaylist) { document.getElementById('no-playlist-warn').classList.remove('hidden'); return; }
+  if (queuedIds.has(videoId)) return;
+  const btn = document.getElementById('qbtn-' + videoId);
+  if (btn) { btn.textContent = '...'; btn.className = 'queue-btn loading'; }
+  try {
+    await gFetch('https://www.googleapis.com/youtube/v3/playlistItems?part=snippet', {
+      method: 'POST',
+      body: JSON.stringify({ snippet: { playlistId: selectedPlaylist.id, resourceId: { kind: 'youtube#video', videoId } } })
+    });
+    queuedIds.add(videoId);
+    addedCount++;
+    if (btn) { btn.textContent = '✓ Added'; btn.className = 'queue-btn added'; }
+    document.getElementById('queue-info-sub').textContent = addedCount + ' song' + (addedCount !== 1 ? 's' : '') + ' added this session';
+    showToast('Added to queue! 🎵', 'success');
+  } catch(e) {
+    if (btn) { btn.textContent = '+ Queue'; btn.className = 'queue-btn'; }
+    showToast('Failed — ' + e.message, 'error');
   }
+}
 
-  window.playNext = async function() {
-    if (queue.length === 0) return;
-    currentVideo = queue.shift();
-    addedIds.delete(currentVideo.videoId);
-    await saveQueue();
-    await saveCurrent();
-    // Auto open YouTube
-    window.open(`https://www.youtube.com/watch?v=${currentVideo.videoId}`, '_blank');
-  };
+function openPlaylistOnYT() {
+  if (!selectedPlaylist) { showToast('Select a playlist first!', 'error'); return; }
+  window.open('https://www.youtube.com/playlist?list=' + selectedPlaylist.id, '_blank');
+}
 
-  window.skipSong = async function() {
-    currentVideo = null;
-    await saveCurrent();
-    if (queue.length > 0) await window.playNext();
-  };
+async function gFetch(url, options = {}) {
+  const res = await fetch(url, { ...options, headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json', ...(options.headers||{}) } });
+  if (!res.ok) { const err = await res.json().catch(()=>({})); throw new Error(err.error?.message || 'HTTP ' + res.status); }
+  return res.json();
+}
 
-  // ── Utils ──
-  function esc(s) {
-    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  }
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
-  function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2500);
-  }
+let toastTimer;
+function showToast(msg, type='success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = 'toast ' + type;
+  clearTimeout(toastTimer);
+  setTimeout(() => t.classList.add('show'), 10);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+handleRedirect();
 </script>
 </body>
 </html>
