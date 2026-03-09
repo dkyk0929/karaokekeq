@@ -29,7 +29,6 @@
     overflow-x: hidden;
   }
 
-  /* Animated background */
   body::before {
     content: '';
     position: fixed;
@@ -43,6 +42,7 @@
   }
 
   .app { position: relative; z-index: 1; }
+  .hidden { display: none !important; }
 
   /* MODE SELECTOR */
   .mode-selector {
@@ -79,12 +79,7 @@
     margin-top: -20px;
   }
 
-  .mode-cards {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
+  .mode-cards { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
 
   .mode-card {
     background: var(--surface);
@@ -97,41 +92,17 @@
     min-width: 200px;
   }
 
-  .mode-card:hover {
-    transform: translateY(-8px) scale(1.02);
-    border-color: var(--accent);
-    box-shadow: 0 20px 60px rgba(255,60,172,0.2);
-  }
-
-  .mode-card.tv:hover {
-    border-color: var(--accent3);
-    box-shadow: 0 20px 60px rgba(0,212,255,0.2);
-  }
+  .mode-card:hover { transform: translateY(-8px) scale(1.02); border-color: var(--accent); box-shadow: 0 20px 60px rgba(255,60,172,0.2); }
+  .mode-card.tv:hover { border-color: var(--accent3); box-shadow: 0 20px 60px rgba(0,212,255,0.2); }
 
   .mode-icon { font-size: 52px; margin-bottom: 16px; }
-  .mode-title {
-    font-family: 'Black Han Sans', sans-serif;
-    font-size: 22px;
-    margin-bottom: 8px;
-  }
+  .mode-title { font-family: 'Black Han Sans', sans-serif; font-size: 22px; margin-bottom: 8px; }
   .mode-desc { color: var(--muted); font-size: 13px; line-height: 1.5; }
 
-  /* HIDDEN */
-  .hidden { display: none !important; }
+  /* PHONE VIEW */
+  #phone-view { min-height: 100vh; display: flex; flex-direction: column; }
 
-  /* ===== PHONE VIEW ===== */
-  #phone-view {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .phone-header {
-    padding: 20px 20px 0;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
+  .phone-header { padding: 20px 20px 0; display: flex; align-items: center; gap: 12px; }
 
   .back-btn {
     background: var(--surface);
@@ -155,8 +126,11 @@
     background-clip: text;
   }
 
-  /* Search */
-  .search-section { padding: 20px; }
+  .status-dot { margin-left: auto; display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--muted); }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); transition: all 0.3s; }
+  .dot.connected { background: var(--success); box-shadow: 0 0 6px var(--success); }
+
+  .search-section { padding: 16px 20px; }
 
   .search-box {
     display: flex;
@@ -194,15 +168,9 @@
   }
   .search-btn:hover { opacity: 0.85; }
 
-  /* Results */
-  .results-section { padding: 0 20px; flex: 1; }
-  .section-label {
-    font-size: 11px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 12px;
-  }
+  .results-section { padding: 0 20px; flex: 1; overflow-y: auto; max-height: calc(100vh - 380px); }
+
+  .section-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
 
   .result-item {
     display: flex;
@@ -210,29 +178,15 @@
     gap: 12px;
     padding: 10px;
     border-radius: 12px;
-    cursor: pointer;
-    transition: background 0.2s;
     margin-bottom: 8px;
+    transition: background 0.2s;
   }
   .result-item:hover { background: var(--surface); }
 
-  .result-thumb {
-    width: 72px; height: 48px;
-    border-radius: 8px;
-    object-fit: cover;
-    flex-shrink: 0;
-    background: var(--surface2);
-  }
+  .result-thumb { width: 72px; height: 48px; border-radius: 8px; object-fit: cover; flex-shrink: 0; background: var(--surface2); }
 
   .result-info { flex: 1; min-width: 0; }
-  .result-title {
-    font-size: 13px;
-    font-weight: 500;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    margin-bottom: 3px;
-  }
+  .result-title { font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 3px; }
   .result-channel { font-size: 11px; color: var(--muted); }
 
   .add-btn {
@@ -247,52 +201,24 @@
     display: flex; align-items: center; justify-content: center;
     transition: all 0.2s;
   }
-  .add-btn:hover {
-    background: var(--accent);
-    color: white;
-    border-color: var(--accent);
-  }
-  .add-btn.added {
-    background: var(--success);
-    border-color: var(--success);
-    color: #000;
-  }
+  .add-btn:hover { background: var(--accent); color: white; border-color: var(--accent); }
+  .add-btn.added { background: var(--success); border-color: var(--success); color: #000; pointer-events: none; }
 
-  /* Queue panel */
   .queue-panel {
     background: var(--surface);
     border-top: 1px solid rgba(255,255,255,0.06);
     padding: 16px 20px;
-    max-height: 280px;
+    flex-shrink: 0;
   }
 
-  .queue-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 12px;
-  }
+  .queue-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
 
-  .queue-count {
-    font-size: 11px;
-    background: var(--accent);
-    color: white;
-    padding: 2px 8px;
-    border-radius: 20px;
-    font-weight: 600;
-  }
+  .queue-count { font-size: 11px; background: var(--accent); color: white; padding: 2px 8px; border-radius: 20px; font-weight: 600; }
 
-  .clear-btn {
-    background: none;
-    border: none;
-    color: var(--muted);
-    font-size: 12px;
-    cursor: pointer;
-    transition: color 0.2s;
-  }
+  .clear-btn { background: none; border: none; color: var(--muted); font-size: 12px; cursor: pointer; transition: color 0.2s; }
   .clear-btn:hover { color: var(--accent); }
 
-  .queue-list { overflow-y: auto; max-height: 200px; }
+  .queue-list { overflow-y: auto; max-height: 180px; }
 
   .queue-item {
     display: flex;
@@ -302,128 +228,23 @@
     border-radius: 10px;
     margin-bottom: 6px;
     background: var(--surface2);
-    transition: all 0.2s;
   }
+  .queue-item.playing { background: linear-gradient(135deg, rgba(255,60,172,0.15), rgba(121,40,202,0.15)); border: 1px solid rgba(255,60,172,0.3); }
 
-  .queue-item.playing {
-    background: linear-gradient(135deg, rgba(255,60,172,0.15), rgba(121,40,202,0.15));
-    border: 1px solid rgba(255,60,172,0.3);
-  }
+  .queue-num { font-size: 11px; color: var(--muted); width: 18px; text-align: center; flex-shrink: 0; }
+  .queue-item.playing .queue-num { color: var(--accent); animation: blink 1s infinite; }
 
-  .queue-num {
-    font-size: 11px;
-    color: var(--muted);
-    width: 18px;
-    text-align: center;
-    flex-shrink: 0;
-  }
+  @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
 
-  .queue-item.playing .queue-num {
-    color: var(--accent);
-    animation: blink 1s infinite;
-  }
-
-  @keyframes blink {
-    0%,100% { opacity: 1; }
-    50% { opacity: 0.3; }
-  }
-
-  .queue-thumb {
-    width: 44px; height: 30px;
-    border-radius: 6px;
-    object-fit: cover;
-    background: var(--bg);
-    flex-shrink: 0;
-  }
-
-  .queue-title {
-    flex: 1;
-    font-size: 12px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .remove-btn {
-    background: none;
-    border: none;
-    color: var(--muted);
-    cursor: pointer;
-    font-size: 14px;
-    padding: 4px;
-    transition: color 0.2s;
-  }
+  .queue-thumb { width: 44px; height: 30px; border-radius: 6px; object-fit: cover; background: var(--bg); flex-shrink: 0; }
+  .queue-title { flex: 1; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .remove-btn { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 14px; padding: 4px; transition: color 0.2s; }
   .remove-btn:hover { color: var(--accent); }
 
-  /* Sync instruction */
-  .sync-tip {
-    margin: 0 20px 12px;
-    background: rgba(0,212,255,0.08);
-    border: 1px solid rgba(0,212,255,0.2);
-    border-radius: 10px;
-    padding: 10px 14px;
-    font-size: 12px;
-    color: var(--accent3);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  /* Loading */
-  .loading {
-    text-align: center;
-    padding: 32px;
-    color: var(--muted);
-    font-size: 14px;
-  }
-
-  .spinner {
-    width: 24px; height: 24px;
-    border: 2px solid rgba(255,255,255,0.1);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-    margin: 0 auto 12px;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  /* Toast */
-  .toast {
-    position: fixed;
-    bottom: 24px;
-    left: 50%;
-    transform: translateX(-50%) translateY(80px);
-    background: var(--success);
-    color: #000;
-    padding: 10px 20px;
-    border-radius: 50px;
-    font-size: 13px;
-    font-weight: 600;
-    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    z-index: 999;
-    white-space: nowrap;
-  }
-  .toast.show { transform: translateX(-50%) translateY(0); }
-
-  /* ===== TV VIEW ===== */
-  #tv-view {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    background: #000;
-  }
-
-  .tv-main {
-    flex: 1;
-    position: relative;
-    background: #000;
-  }
-
-  #tv-player {
-    width: 100%;
-    height: calc(100vh - 140px);
-    border: none;
-  }
+  /* TV VIEW */
+  #tv-view { min-height: 100vh; display: flex; flex-direction: column; background: #000; }
+  .tv-main { flex: 1; position: relative; background: #000; }
+  #tv-player { width: 100%; height: calc(100vh - 140px); border: none; }
 
   .tv-overlay {
     position: absolute;
@@ -459,81 +280,21 @@
     overflow: hidden;
   }
 
-  .tv-now-playing {
-    flex-shrink: 0;
-    width: 200px;
-  }
+  .tv-now-playing { flex-shrink: 0; width: 220px; }
+  .tv-now-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
+  .tv-now-title { font-family: 'Black Han Sans', sans-serif; font-size: 15px; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-  .tv-now-label {
-    font-size: 10px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 4px;
-  }
+  .tv-divider { width: 1px; height: 60px; background: rgba(255,255,255,0.1); flex-shrink: 0; }
 
-  .tv-now-title {
-    font-family: 'Black Han Sans', sans-serif;
-    font-size: 15px;
-    line-height: 1.3;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+  .tv-up-next { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
 
-  .tv-divider {
-    width: 1px;
-    height: 60px;
-    background: rgba(255,255,255,0.1);
-    flex-shrink: 0;
-  }
+  .tv-queue-scroll { display: flex; gap: 12px; overflow: hidden; flex: 1; }
 
-  .tv-up-next {
-    font-size: 10px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 8px;
-  }
+  .tv-queue-chip { background: var(--surface2); border-radius: 8px; padding: 8px 12px; flex-shrink: 0; max-width: 180px; display: flex; align-items: center; gap: 8px; }
+  .tv-chip-num { font-size: 11px; color: var(--accent); font-weight: 600; flex-shrink: 0; }
+  .tv-chip-title { font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-  .tv-queue-scroll {
-    display: flex;
-    gap: 12px;
-    overflow: hidden;
-    flex: 1;
-  }
-
-  .tv-queue-chip {
-    background: var(--surface2);
-    border-radius: 8px;
-    padding: 8px 12px;
-    flex-shrink: 0;
-    max-width: 180px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .tv-chip-num {
-    font-size: 11px;
-    color: var(--accent);
-    font-weight: 600;
-    flex-shrink: 0;
-  }
-
-  .tv-chip-title {
-    font-size: 12px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .tv-controls {
-    display: flex;
-    gap: 10px;
-    margin-left: auto;
-    flex-shrink: 0;
-  }
+  .tv-controls { display: flex; gap: 10px; margin-left: auto; flex-shrink: 0; }
 
   .tv-btn {
     background: var(--surface2);
@@ -551,36 +312,34 @@
     gap: 6px;
   }
   .tv-btn:hover { background: var(--accent); border-color: var(--accent); }
-  .tv-btn.primary {
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    border-color: transparent;
-  }
+  .tv-btn.primary { background: linear-gradient(135deg, var(--accent), var(--accent2)); border-color: transparent; }
 
-  /* Scrollbar */
+  .loading { text-align: center; padding: 32px; color: var(--muted); font-size: 14px; }
+  .spinner { width: 24px; height: 24px; border: 2px solid rgba(255,255,255,0.1); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 12px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--success);
+    color: #000;
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 999;
+    white-space: nowrap;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  .empty-state { text-align: center; padding: 24px; color: var(--muted); font-size: 13px; }
+
   ::-webkit-scrollbar { width: 4px; height: 4px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--surface2); border-radius: 2px; }
-
-  .empty-state {
-    text-align: center;
-    padding: 24px;
-    color: var(--muted);
-    font-size: 13px;
-  }
-
-  .url-tip {
-    position: fixed;
-    top: 16px;
-    right: 16px;
-    background: var(--surface);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 10px;
-    padding: 10px 14px;
-    font-size: 12px;
-    color: var(--muted);
-    z-index: 100;
-  }
-  .url-tip span { color: var(--accent3); font-weight: 600; }
 </style>
 </head>
 <body>
@@ -609,17 +368,17 @@
     <div class="phone-header">
       <button class="back-btn" onclick="showView('home')">←</button>
       <div class="phone-title">🎤 KaraokeQ</div>
-    </div>
-
-    <div class="sync-tip">
-      💡 Open TV mode on your TV browser — queue syncs automatically
+      <div class="status-dot">
+        <div class="dot" id="status-dot"></div>
+        <span id="status-text">Connecting...</span>
+      </div>
     </div>
 
     <div class="search-section">
       <div class="search-box">
-        <input class="search-input" id="search-input" type="text" placeholder="Search Korean songs..." 
-          onkeydown="if(event.key==='Enter') searchYouTube()">
-        <button class="search-btn" onclick="searchYouTube()">Search</button>
+        <input class="search-input" id="search-input" type="text" placeholder="Search Korean songs..."
+          onkeydown="if(event.key==='Enter') window.searchYouTube()">
+        <button class="search-btn" onclick="window.searchYouTube()">Search</button>
       </div>
     </div>
 
@@ -633,7 +392,7 @@
           <div class="section-label" style="margin:0">Queue</div>
           <div class="queue-count" id="queue-count">0</div>
         </div>
-        <button class="clear-btn" onclick="clearQueue()">Clear all</button>
+        <button class="clear-btn" onclick="window.clearQueue()">Clear all</button>
       </div>
       <div class="queue-list" id="phone-queue-list">
         <div class="empty-state">No songs queued yet</div>
@@ -643,7 +402,6 @@
 
   <!-- TV VIEW -->
   <div id="tv-view" class="hidden">
-    <div class="url-tip">📱 Phone: open this page → select <span>Phone</span></div>
     <div class="tv-main">
       <div class="tv-overlay" id="tv-overlay">
         <div class="tv-idle-logo">🎤 KaraokeQ</div>
@@ -664,265 +422,213 @@
         </div>
       </div>
       <div class="tv-controls">
-        <button class="tv-btn" onclick="skipSong()">⏭ Skip</button>
-        <button class="tv-btn primary" onclick="playNext()">▶ Play Next</button>
+        <button class="tv-btn" onclick="window.skipSong()">⏭ Skip</button>
+        <button class="tv-btn primary" onclick="window.playNext()">▶ Play Next</button>
       </div>
     </div>
   </div>
 
 </div>
 
-<!-- Toast -->
 <div class="toast" id="toast"></div>
 
-<script>
-const API_KEY = 'AIzaSyBmydGkqWKuH1ecZ4dH1k667YlY0qFjWW0';
-const STORAGE_KEY = 'karaokeq_queue';
-const CURRENT_KEY = 'karaokeq_current';
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-let queue = [];
-let currentVideo = null;
-let currentView = 'home';
-let tvCheckInterval = null;
-let addedIds = new Set();
+  const firebaseConfig = {
+    apiKey: "AIzaSyDfZHQNoYOpUaBOhYIn2x3lr_BQuC6l62s",
+    authDomain: "karaokeq-564b2.firebaseapp.com",
+    databaseURL: "https://karaokeq-564b2-default-rtdb.firebaseio.com",
+    projectId: "karaokeq-564b2",
+    storageBucket: "karaokeq-564b2.firebasestorage.app",
+    messagingSenderId: "149342264225",
+    appId: "1:149342264225:web:24d626de87546757d249e0"
+  };
 
-// ===== STORAGE (shared via localStorage) =====
-function saveQueue() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(queue));
-  localStorage.setItem(CURRENT_KEY, JSON.stringify(currentVideo));
-}
+  const firebaseApp = initializeApp(firebaseConfig);
+  const db = getDatabase(firebaseApp);
 
-function loadQueue() {
-  try {
-    queue = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-    currentVideo = JSON.parse(localStorage.getItem(CURRENT_KEY)) || null;
-  } catch(e) {
-    queue = [];
-    currentVideo = null;
-  }
-}
+  const YT_KEY = 'AIzaSyBmydGkqWKuH1ecZ4dH1k667YlY0qFjWW0';
 
-// ===== VIEW MANAGEMENT =====
-function showView(view) {
-  currentView = view;
-  document.getElementById('mode-selector').classList.toggle('hidden', view !== 'home');
-  document.getElementById('phone-view').classList.toggle('hidden', view !== 'phone');
-  document.getElementById('tv-view').classList.toggle('hidden', view !== 'tv');
+  let queue = [];
+  let currentVideo = null;
+  let currentView = 'home';
+  let addedIds = new Set();
 
-  if (view === 'phone') {
-    loadQueue();
-    renderPhoneQueue();
-    startPhoneSync();
-  } else if (view === 'tv') {
-    loadQueue();
-    renderTV();
-    startTVSync();
-  } else {
-    stopSync();
-  }
-}
-
-// ===== SEARCH =====
-async function searchYouTube() {
-  const query = document.getElementById('search-input').value.trim();
-  if (!query) return;
-
-  const section = document.getElementById('results-section');
-  section.innerHTML = `<div class="loading"><div class="spinner"></div>Searching...</div>`;
-
-  try {
-    const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(query + ' karaoke')}&type=video&maxResults=10&key=${API_KEY}`;
-    const res = await fetch(url);
-    const data = await res.json();
-
-    if (!data.items || data.items.length === 0) {
-      section.innerHTML = `<div class="empty-state">No results found</div>`;
-      return;
-    }
-
-    section.innerHTML = `<div class="section-label">Results</div>`;
-    data.items.forEach(item => {
-      const vid = item.id.videoId;
-      const title = item.snippet.title;
-      const channel = item.snippet.channelTitle;
-      const thumb = item.snippet.thumbnails.default.url;
-      const isAdded = addedIds.has(vid);
-
-      const el = document.createElement('div');
-      el.className = 'result-item';
-      el.innerHTML = `
-        <img class="result-thumb" src="${thumb}" alt="">
-        <div class="result-info">
-          <div class="result-title">${escHtml(title)}</div>
-          <div class="result-channel">${escHtml(channel)}</div>
-        </div>
-        <button class="add-btn ${isAdded ? 'added' : ''}" onclick="addToQueue('${vid}', \`${escJs(title)}\`, '${thumb}', this)" title="Add to queue">
-          ${isAdded ? '✓' : '+'}
-        </button>
-      `;
-      section.appendChild(el);
-    });
-  } catch(e) {
-    section.innerHTML = `<div class="empty-state">Error: ${e.message}</div>`;
-  }
-}
-
-// ===== QUEUE MANAGEMENT =====
-function addToQueue(videoId, title, thumb, btn) {
-  if (addedIds.has(videoId)) return;
-  addedIds.add(videoId);
-
-  queue.push({ videoId, title, thumb });
-  saveQueue();
-  renderPhoneQueue();
-  updateQueueCount();
-
-  if (btn) {
-    btn.textContent = '✓';
-    btn.classList.add('added');
-  }
-
-  showToast(`Added: ${title.substring(0,30)}...`);
-}
-
-function removeFromQueue(index) {
-  const removed = queue.splice(index, 1)[0];
-  if (removed) addedIds.delete(removed.videoId);
-  saveQueue();
-  renderPhoneQueue();
-  updateQueueCount();
-}
-
-function clearQueue() {
-  queue = [];
-  addedIds.clear();
-  saveQueue();
-  renderPhoneQueue();
-  updateQueueCount();
-}
-
-function updateQueueCount() {
-  document.getElementById('queue-count').textContent = queue.length;
-}
-
-function renderPhoneQueue() {
-  const list = document.getElementById('phone-queue-list');
-  updateQueueCount();
-
-  if (queue.length === 0) {
-    list.innerHTML = '<div class="empty-state">No songs queued yet</div>';
-    return;
-  }
-
-  list.innerHTML = '';
-  queue.forEach((item, i) => {
-    const isPlaying = currentVideo && currentVideo.videoId === item.videoId;
-    const el = document.createElement('div');
-    el.className = `queue-item${isPlaying ? ' playing' : ''}`;
-    el.innerHTML = `
-      <div class="queue-num">${isPlaying ? '♪' : i + 1}</div>
-      <img class="queue-thumb" src="${item.thumb}" alt="">
-      <div class="queue-title">${escHtml(item.title)}</div>
-      <button class="remove-btn" onclick="removeFromQueue(${i})">✕</button>
-    `;
-    list.appendChild(el);
+  // ── Firebase listeners ──
+  onValue(ref(db, 'karaokeq/queue'), snap => {
+    queue = snap.val() || [];
+    addedIds = new Set(queue.map(v => v.videoId));
+    if (currentView === 'phone') renderPhoneQueue();
+    if (currentView === 'tv') renderTVQueue();
   });
-}
 
-// ===== TV PLAYER =====
-function renderTV() {
-  const overlay = document.getElementById('tv-overlay');
-  const player = document.getElementById('tv-player');
-  const nowTitle = document.getElementById('tv-now-title');
-  const queueScroll = document.getElementById('tv-queue-scroll');
+  onValue(ref(db, 'karaokeq/current'), snap => {
+    const prev = currentVideo?.videoId;
+    currentVideo = snap.val() || null;
+    if (currentView === 'tv' && currentVideo?.videoId !== prev) renderTVPlayer();
+    if (currentView === 'phone') renderPhoneQueue();
+  });
 
-  if (currentVideo) {
-    overlay.style.display = 'none';
-    player.style.display = 'block';
-    player.src = `https://www.youtube.com/embed/${currentVideo.videoId}?autoplay=1&rel=0&modestbranding=1`;
-    nowTitle.textContent = currentVideo.title;
-  } else {
-    overlay.style.display = 'flex';
-    player.style.display = 'none';
-    player.src = '';
-    nowTitle.textContent = '—';
+  onValue(ref(db, '.info/connected'), snap => {
+    const ok = snap.val();
+    const dot = document.getElementById('status-dot');
+    const txt = document.getElementById('status-text');
+    if (dot) dot.className = 'dot' + (ok ? ' connected' : '');
+    if (txt) txt.textContent = ok ? 'Live' : 'Reconnecting...';
+  });
+
+  // ── DB helpers ──
+  async function saveQueue() { await set(ref(db, 'karaokeq/queue'), queue.length ? queue : null); }
+  async function saveCurrent() { await set(ref(db, 'karaokeq/current'), currentVideo || null); }
+
+  // ── View ──
+  window.showView = function(view) {
+    currentView = view;
+    document.getElementById('mode-selector').classList.toggle('hidden', view !== 'home');
+    document.getElementById('phone-view').classList.toggle('hidden', view !== 'phone');
+    document.getElementById('tv-view').classList.toggle('hidden', view !== 'tv');
+    if (view === 'phone') renderPhoneQueue();
+    if (view === 'tv') { renderTVPlayer(); renderTVQueue(); }
+  };
+
+  // ── Search ──
+  window.searchYouTube = async function() {
+    const query = document.getElementById('search-input').value.trim();
+    if (!query) return;
+    const section = document.getElementById('results-section');
+    section.innerHTML = `<div class="loading"><div class="spinner"></div>Searching...</div>`;
+    try {
+      const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(query + ' 노래방 MR')}&type=video&maxResults=12&key=${YT_KEY}`;
+      const data = await (await fetch(url)).json();
+      if (!data.items?.length) { section.innerHTML = `<div class="empty-state">No results found</div>`; return; }
+      section.innerHTML = `<div class="section-label">Results</div>`;
+      data.items.forEach(item => {
+        const vid = item.id.videoId;
+        const title = item.snippet.title;
+        const channel = item.snippet.channelTitle;
+        const thumb = item.snippet.thumbnails.default.url;
+        const isAdded = addedIds.has(vid);
+        const el = document.createElement('div');
+        el.className = 'result-item';
+        el.innerHTML = `
+          <img class="result-thumb" src="${thumb}" alt="">
+          <div class="result-info">
+            <div class="result-title">${esc(title)}</div>
+            <div class="result-channel">${esc(channel)}</div>
+          </div>
+          <button class="add-btn ${isAdded ? 'added' : ''}" id="btn-${vid}">${isAdded ? '✓' : '+'}</button>
+        `;
+        el.querySelector('.add-btn').addEventListener('click', () => addToQueue(vid, title, thumb));
+        section.appendChild(el);
+      });
+    } catch(e) { section.innerHTML = `<div class="empty-state">Error: ${e.message}</div>`; }
+  };
+
+  // ── Queue ──
+  async function addToQueue(videoId, title, thumb) {
+    if (addedIds.has(videoId)) return;
+    addedIds.add(videoId);
+    const btn = document.getElementById(`btn-${videoId}`);
+    if (btn) { btn.textContent = '✓'; btn.classList.add('added'); }
+    queue.push({ videoId, title, thumb });
+    await saveQueue();
+    showToast(`Added to queue!`);
   }
 
-  if (queue.length === 0) {
-    queueScroll.innerHTML = '<div style="color:var(--muted);font-size:13px;">Queue is empty</div>';
-  } else {
-    queueScroll.innerHTML = '';
+  window.removeFromQueue = async function(index) {
+    const removed = queue.splice(index, 1)[0];
+    if (removed) addedIds.delete(removed.videoId);
+    await saveQueue();
+  };
+
+  window.clearQueue = async function() {
+    queue = [];
+    addedIds.clear();
+    await saveQueue();
+  };
+
+  function renderPhoneQueue() {
+    const list = document.getElementById('phone-queue-list');
+    const count = document.getElementById('queue-count');
+    if (!list) return;
+    if (count) count.textContent = queue.length;
+    if (queue.length === 0) { list.innerHTML = '<div class="empty-state">No songs queued yet</div>'; return; }
+    list.innerHTML = '';
+    queue.forEach((item, i) => {
+      const isPlaying = currentVideo?.videoId === item.videoId;
+      const el = document.createElement('div');
+      el.className = `queue-item${isPlaying ? ' playing' : ''}`;
+      el.innerHTML = `
+        <div class="queue-num">${isPlaying ? '♪' : i + 1}</div>
+        <img class="queue-thumb" src="${item.thumb}" alt="">
+        <div class="queue-title">${esc(item.title)}</div>
+        <button class="remove-btn" onclick="window.removeFromQueue(${i})">✕</button>
+      `;
+      list.appendChild(el);
+    });
+  }
+
+  // ── TV ──
+  function renderTVPlayer() {
+    const overlay = document.getElementById('tv-overlay');
+    const player = document.getElementById('tv-player');
+    const nowTitle = document.getElementById('tv-now-title');
+    if (!overlay || !player) return;
+
+    if (currentVideo) {
+      overlay.style.display = 'none';
+      player.style.display = 'block';
+      const newSrc = `https://www.youtube.com/embed/${currentVideo.videoId}?autoplay=1&rel=0&modestbranding=1`;
+      if (player.src !== newSrc) player.src = newSrc;
+      if (nowTitle) nowTitle.textContent = currentVideo.title;
+    } else {
+      overlay.style.display = 'flex';
+      player.style.display = 'none';
+      player.src = '';
+      if (nowTitle) nowTitle.textContent = '—';
+    }
+  }
+
+  function renderTVQueue() {
+    const qs = document.getElementById('tv-queue-scroll');
+    if (!qs) return;
+    if (queue.length === 0) { qs.innerHTML = '<div style="color:var(--muted);font-size:13px;">Queue is empty</div>'; return; }
+    qs.innerHTML = '';
     queue.forEach((item, i) => {
       const chip = document.createElement('div');
       chip.className = 'tv-queue-chip';
-      chip.innerHTML = `
-        <div class="tv-chip-num">${i + 1}</div>
-        <div class="tv-chip-title">${escHtml(item.title)}</div>
-      `;
-      queueScroll.appendChild(chip);
+      chip.innerHTML = `<div class="tv-chip-num">${i + 1}</div><div class="tv-chip-title">${esc(item.title)}</div>`;
+      qs.appendChild(chip);
     });
   }
-}
 
-function playNext() {
-  if (queue.length === 0) return;
-  currentVideo = queue.shift();
-  addedIds.delete(currentVideo.videoId);
-  saveQueue();
-  renderTV();
-}
+  window.playNext = async function() {
+    if (queue.length === 0) return;
+    currentVideo = queue.shift();
+    addedIds.delete(currentVideo.videoId);
+    await saveQueue();
+    await saveCurrent();
+  };
 
-function skipSong() {
-  currentVideo = null;
-  saveQueue();
-  if (queue.length > 0) playNext();
-  else renderTV();
-}
+  window.skipSong = async function() {
+    currentVideo = null;
+    await saveCurrent();
+    if (queue.length > 0) await window.playNext();
+  };
 
-// ===== SYNC =====
-let syncInterval = null;
+  // ── Utils ──
+  function esc(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
 
-function startTVSync() {
-  renderTV();
-  syncInterval = setInterval(() => {
-    const prev = JSON.stringify({ queue, currentVideo });
-    loadQueue();
-    const next = JSON.stringify({ queue, currentVideo });
-    if (prev !== next) renderTV();
-
-    // Auto-play if queue has items but nothing is playing
-    if (!currentVideo && queue.length > 0) playNext();
-  }, 2000);
-}
-
-function startPhoneSync() {
-  syncInterval = setInterval(() => {
-    loadQueue();
-    renderPhoneQueue();
-  }, 2000);
-}
-
-function stopSync() {
-  if (syncInterval) { clearInterval(syncInterval); syncInterval = null; }
-}
-
-// ===== UTILS =====
-function escHtml(str) {
-  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-function escJs(str) {
-  return str.replace(/`/g,'\\`').replace(/\$/g,'\\$');
-}
-
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2500);
-}
-
-// Init
-loadQueue();
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
 </script>
 </body>
 </html>
