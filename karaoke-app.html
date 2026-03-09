@@ -254,8 +254,24 @@
     justify-content: center;
     background: var(--bg);
     flex-direction: column;
-    gap: 16px;
+    gap: 20px;
   }
+
+  .tv-play-btn {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border: none;
+    color: white;
+    padding: 18px 40px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: 20px;
+    letter-spacing: 1px;
+    transition: all 0.2s;
+    box-shadow: 0 8px 30px rgba(255,60,172,0.3);
+  }
+  .tv-play-btn:hover { transform: scale(1.05); box-shadow: 0 12px 40px rgba(255,60,172,0.5); }
+  .tv-play-btn.hidden { display: none; }
 
   .tv-idle-logo {
     font-family: 'Black Han Sans', sans-serif;
@@ -405,9 +421,9 @@
     <div class="tv-main">
       <div class="tv-overlay" id="tv-overlay">
         <div class="tv-idle-logo">🎤 KaraokeQ</div>
-        <div class="tv-idle-text">Add songs from your phone to start</div>
+        <div class="tv-idle-text" id="tv-idle-text">Add songs from your phone to start</div>
+        <button class="tv-play-btn hidden" id="tv-play-btn" onclick="window.openCurrentVideo()">▶ Play on YouTube</button>
       </div>
-      <iframe id="tv-player" allow="autoplay; encrypted-media" allowfullscreen style="display:none"></iframe>
     </div>
     <div class="tv-queue-bar">
       <div class="tv-now-playing">
@@ -573,23 +589,28 @@
   // ── TV ──
   function renderTVPlayer() {
     const overlay = document.getElementById('tv-overlay');
-    const player = document.getElementById('tv-player');
     const nowTitle = document.getElementById('tv-now-title');
-    if (!overlay || !player) return;
+    const idleText = document.getElementById('tv-idle-text');
+    const playBtn = document.getElementById('tv-play-btn');
+    if (!overlay) return;
+
+    overlay.style.display = 'flex';
 
     if (currentVideo) {
-      overlay.style.display = 'none';
-      player.style.display = 'block';
-      const newSrc = `https://www.youtube.com/embed/${currentVideo.videoId}?autoplay=1&rel=0&modestbranding=1`;
-      if (player.src !== newSrc) player.src = newSrc;
       if (nowTitle) nowTitle.textContent = currentVideo.title;
+      if (idleText) idleText.textContent = `Up: ${currentVideo.title}`;
+      if (playBtn) playBtn.classList.remove('hidden');
     } else {
-      overlay.style.display = 'flex';
-      player.style.display = 'none';
-      player.src = '';
       if (nowTitle) nowTitle.textContent = '—';
+      if (idleText) idleText.textContent = 'Add songs from your phone to start';
+      if (playBtn) playBtn.classList.add('hidden');
     }
   }
+
+  window.openCurrentVideo = function() {
+    if (!currentVideo) return;
+    window.open(`https://www.youtube.com/watch?v=${currentVideo.videoId}`, '_blank');
+  };
 
   function renderTVQueue() {
     const qs = document.getElementById('tv-queue-scroll');
@@ -610,6 +631,8 @@
     addedIds.delete(currentVideo.videoId);
     await saveQueue();
     await saveCurrent();
+    // Auto open YouTube
+    window.open(`https://www.youtube.com/watch?v=${currentVideo.videoId}`, '_blank');
   };
 
   window.skipSong = async function() {
